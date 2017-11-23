@@ -9,13 +9,20 @@ Drock is a Makefile that helps you to install, configure and start
 ## How to use it?
 
 Assuming you already have [docker](https://www.docker.com) installed, copy the
-[Makefile](https://raw.githubusercontent.com/mariano-dagostino/drock/master/Makefile) into a folder and then run:
+[Makefile](https://raw.githubusercontent.com/mariano-dagostino/drock/master/Makefile) into a folder:
+
+```
+mkdir your_project && cd your_project
+curl -LO https://raw.githubusercontent.com/mariano-dagostino/drock/master/Makefile
+```
+
+Then run:
 
 `make setup`
 
 This will download Laradock and configure drupal.dev as virtualhost.
 
-Then just run:
+And finally just run:
 
 `make start`
 
