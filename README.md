@@ -22,6 +22,7 @@ And this will build all the containers and start your development environment.
 
 `make setup` Installs laradock.
 `make start` Starts the container.
+`make bash`  Logs you into the workspace container using bash. (bash-php, bash-nginx are also avaible.)
 `make stop`  Stops the containers.
 `make clean` Deletes laradock files.
 

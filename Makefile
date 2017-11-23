@@ -57,9 +57,6 @@ bash-nginx:
 bash-php: 
 	cd laradock && docker-compose exec php-fpm bash
 
-mysql: 
-	cd laradock && docker-compose exec workspace "mysql -h -u root -proot mariadb"
-
 stop:
 	cd laradock && docker-compose down
 
