@@ -9,7 +9,7 @@ Drock is a Makefile that helps you to install, configure and start
 ## How to use it?
 
 Assuming you already have [docker](https://www.docker.com) installed, copy the
-Makefile into a folder and then run:
+[Makefile](https://raw.githubusercontent.com/mariano-dagostino/drock/master/Makefile) into a folder and then run:
 
 `make setup`
 
