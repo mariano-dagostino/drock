@@ -50,6 +50,10 @@ The containers will be launched and your development environment will be ready.
 - make
 - linux
 
+## See it in action:
+
+[![asciicast](https://asciinema.org/a/3tn1LeRxKMuViYCy9dubuui7F.png)](https://asciinema.org/a/3tn1LeRxKMuViYCy9dubuui7F)
+
 ## Author:
 
 Mariano D'Agostino [drupal.org/u/dagmar](https://www.drupal.org/user/154086)
