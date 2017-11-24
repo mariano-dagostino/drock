@@ -58,6 +58,21 @@ The containers will be launched and your development environment will be ready.
 
 [![asciicast](https://asciinema.org/a/3tn1LeRxKMuViYCy9dubuui7F.png)](https://asciinema.org/a/3tn1LeRxKMuViYCy9dubuui7F)
 
+### Try ContentaCMS with Drock
+
+This example shows how easy is to install [ContentaCMS](http://www.contentacms.org/) using Drock with 4 lines of code.
+
+```
+make start
+make bash
+composer create-project contentacms/contenta-jsonapi-project drupal --stability dev --no-interaction
+../bin/drush si contenta_jsonapi --db-url=mysql://root:root@mariadb/dbname -y
+```
+
+Don't forget to add `127.0.0.1 drupal.dev` to your /etc/hosts file.
+
+[![asciicast](https://asciinema.org/a/oVN2iPf1ZSsob7NI95Uuz6MAx.png)](https://asciinema.org/a/oVN2iPf1ZSsob7NI95Uuz6MAx)
+
 ## Author:
 
 Mariano D'Agostino [drupal.org/u/dagmar](https://www.drupal.org/user/154086)
