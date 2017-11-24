@@ -73,6 +73,22 @@ Don't forget to add `127.0.0.1 drupal.dev` to your /etc/hosts file.
 
 [![asciicast](https://asciinema.org/a/oVN2iPf1ZSsob7NI95Uuz6MAx.png)](https://asciinema.org/a/oVN2iPf1ZSsob7NI95Uuz6MAx)
 
+### Also works with BLT
+
+If you plan to use [BLT](http://blt.readthedocs.io/en/latest/readme/creating-new-project/) from Acquia to run your site, you can use the following commands:
+
+```
+make start
+make bash
+composer create-project --no-interaction acquia/blt-project drupal
+# You will need to logout from the terminal the first time
+make bash
+cd drupal
+blt
+```
+
+[![asciicast](https://asciinema.org/a/a3iSaIHBqkLFs4hhOMhe7lrg6.png)](https://asciinema.org/a/a3iSaIHBqkLFs4hhOMhe7lrg6)
+
 ## Author:
 
 Mariano D'Agostino [drupal.org/u/dagmar](https://www.drupal.org/user/154086)
