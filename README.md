@@ -8,6 +8,9 @@ Drock is a Makefile that helps you to install, configure and start
 [Laradock.io](https://github.com/laradock/laradock) customized to run
 [Drupal](https://drupal.org) projects.
 
+This Makefile allows developers to create development environments ready to
+use by running a few commands from the terminal.
+
 ## How to use it?
 
 Assuming you already have [docker](https://www.docker.com) installed, copy the
@@ -46,9 +49,10 @@ The containers will be launched and your development environment will be ready.
 
 ## Requirements:
 
-- docker 17+
+- docker 17+ and docker-compose
 - make
 - linux
+- **Be able to run docker without sudo** [see how](https://docs.docker.com/engine/installation/linux/linux-postinstall/)
 
 ## See it in action:
 
