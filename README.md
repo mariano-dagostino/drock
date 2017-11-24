@@ -1,15 +1,17 @@
 # Drock
 
+[![Build Status](https://travis-ci.org/mariano-dagostino/drock.svg?branch=master)](https://travis-ci.org/mariano-dagostino/drock)
+
 ## What is Drock?
 
 Drock is a Makefile that helps you to install, configure and start
-[Laradock.io](https://github.com/laradock/laradock) to run
+[Laradock.io](https://github.com/laradock/laradock) customized to run
 [Drupal](https://drupal.org) projects.
 
 ## How to use it?
 
 Assuming you already have [docker](https://www.docker.com) installed, copy the
-[Makefile](https://raw.githubusercontent.com/mariano-dagostino/drock/master/Makefile) into a folder:
+**[Makefile](https://raw.githubusercontent.com/mariano-dagostino/drock/master/Makefile)** into a folder:
 
 ```
 mkdir your_project && cd your_project
@@ -26,7 +28,13 @@ And finally just run:
 
 `make start`
 
-And this will build all the containers and start your development environment.
+The containers will be launched and your development environment will be ready.
+
+## What is next?
+
+- Don't forget to configure your `/etc/hosts` file. Add `127.0.0.1 drupal.dev`
+- You can login to the workspace container by running `make bash`
+- Drupal is not installed by default, the expected path for the index.php file is `/var/www/drupal/web/index.php`
 
 ## List of commmands:
 
