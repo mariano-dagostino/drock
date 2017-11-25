@@ -1,4 +1,4 @@
-# This file help you to use Laradock (https://github.com/laradock/laradock) 
+# This file help you to use Laradock (https://github.com/laradock/laradock)
 # to setup a drupal project fast.
 
 # Run make help for instructions.
@@ -24,7 +24,7 @@ laradock/.env:
 	@sed -i -e 's/PHP_FPM_INSTALL_OPCACHE=false/PHP_FPM_INSTALL_OPCACHE=true/g' laradock/.env
 	@sed -i -e 's/WORKSPACE_PUID=1000/WORKSPACE_PUID=$(UID)/g' laradock/.env
 	@sed -i -e 's/WORKSPACE_PGID=1000/WORKSPACE_PGID=$(GID)/g' laradock/.env
-	
+
 	@# Workarround to install mysql-client to make drush & console work.
 	@sed -i -e 's/^RUN apt-get clean \&\&/RUN apt-get install mysql-client -y \&\& apt-get clean \&\&/g' laradock/workspace/Dockerfile-71
 	@sed -i -e 's/^RUN apt-get clean \&\&/RUN apt-get install mysql-client -y \&\& apt-get clean \&\&/g' laradock/workspace/Dockerfile-70
@@ -48,14 +48,20 @@ setup: laradock/docker-compose.yml laradock/.env laradock/nginx/sites/drupal.con
 start: setup
 	cd laradock && docker-compose up -d nginx mariadb
 
-bash: 
+bash:
 	cd laradock && docker-compose exec --user=laradock workspace bash
 
-bash-nginx: 
+bash-nginx:
 	cd laradock && docker-compose exec nginx bash
 
-bash-php: 
+bash-php:
 	cd laradock && docker-compose exec php-fpm bash
+
+bash-mysql:
+	cd laradock && docker-compose exec mariadb bash
+
+mysql:
+	cd laradock && docker-compose exec mariadb bash -c "mysql -u root -proot"
 
 stop:
 	cd laradock && docker-compose down
@@ -64,6 +70,11 @@ clean:
 	rm -fR laradock v$(laradock_version).zip
 
 help:
-	@echo "make setup   Install Laradock $(laradock_version)."
-	@echo "make start   Starts the mariadb, nginx, php and workspace containers."
-	@echo "make clean   Removes Laradock."
+	@echo "make setup       Install Laradock $(laradock_version)."
+	@echo "make start       Starts the mariadb, nginx, php and workspace containers."
+	@echo "make clean       Removes Laradock."
+	@echo "make bash        Starts a bash session inside the workspace container."
+	@echo "make mysql       Logins you as root inside mysql console."
+	@echo "make bash-php    Starts a bash session inside the php-fpm container."
+	@echo "make bash-nginx  Starts a bash session inside the nginx-fpm container."
+	@echo "make bash-mysql  Starts a bash session inside the mariadb container."
