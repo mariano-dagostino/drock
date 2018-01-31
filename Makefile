@@ -10,6 +10,8 @@ laradock_version = 5.8.3
 # Add here all the commands you want to run in the
 # workspace container before complete the build.
 define extra_steps
+#!/bin/bash
+
 # Install mysql-client to use drush and drupal-console inside the workspace.
 apt-get install -y mysql-client
 endef
@@ -35,7 +37,7 @@ laradock/.env:
 	@#sed -i -e 's/WORKSPACE_PGID=1000/WORKSPACE_PGID=$(GID)/g' laradock/.env
 
 	@# Run the extra steps before the clean up.
-	@echo $(extra_steps) > laradock/workspace/extra-steps.sh
+	@$(file >laradock/workspace/extra-steps.sh,$(extra_steps))
 	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN chmod u+x /tmp/extra-steps.sh && /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-71
 	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN chmod u+x /tmp/extra-steps.sh && /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-70
 	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN chmod u+x /tmp/extra-steps.sh && /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-56
