@@ -29,8 +29,10 @@ laradock/nginx/sites/drupal.conf:
 laradock/.env:
 	@cp laradock/env-example laradock/.env
 	@sed -i -e 's/PHP_FPM_INSTALL_OPCACHE=false/PHP_FPM_INSTALL_OPCACHE=true/g' laradock/.env
-	@sed -i -e 's/WORKSPACE_PUID=1000/WORKSPACE_PUID=$(UID)/g' laradock/.env
-	@sed -i -e 's/WORKSPACE_PGID=1000/WORKSPACE_PGID=$(GID)/g' laradock/.env
+	@# In case you have issues with shared directories, you may want to uncomment
+	@# this lines.
+	#@sed -i -e 's/WORKSPACE_PUID=1000/WORKSPACE_PUID=$(UID)/g' laradock/.env
+	#@sed -i -e 's/WORKSPACE_PGID=1000/WORKSPACE_PGID=$(GID)/g' laradock/.env
 
 	@# Run the extra steps before the clean up.
 	@echo $(extra_steps) > laradock/workspace/extra-steps.sh
