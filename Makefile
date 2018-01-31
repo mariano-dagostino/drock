@@ -31,14 +31,14 @@ laradock/.env:
 	@sed -i -e 's/PHP_FPM_INSTALL_OPCACHE=false/PHP_FPM_INSTALL_OPCACHE=true/g' laradock/.env
 	@# In case you have issues with shared directories, you may want to uncomment
 	@# this lines.
-	#@sed -i -e 's/WORKSPACE_PUID=1000/WORKSPACE_PUID=$(UID)/g' laradock/.env
-	#@sed -i -e 's/WORKSPACE_PGID=1000/WORKSPACE_PGID=$(GID)/g' laradock/.env
+	@#sed -i -e 's/WORKSPACE_PUID=1000/WORKSPACE_PUID=$(UID)/g' laradock/.env
+	@#sed -i -e 's/WORKSPACE_PGID=1000/WORKSPACE_PGID=$(GID)/g' laradock/.env
 
 	@# Run the extra steps before the clean up.
 	@echo $(extra_steps) > laradock/workspace/extra-steps.sh
-	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-71
-	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-70
-	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-56
+	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN chmod u+x /tmp/extra-steps.sh && /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-71
+	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN chmod u+x /tmp/extra-steps.sh && /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-70
+	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN chmod u+x /tmp/extra-steps.sh && /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-56
 
 	@# Make sure opcache.use_cwd is enabled. If not, is not possible to install multiple drupal sites in the same container.
 	@sed -i -e 's/opcache.use_cwd="0"/opcache.use_cwd="1"/g' laradock/php-fpm/opcache.ini
