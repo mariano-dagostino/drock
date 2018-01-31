@@ -13,8 +13,11 @@ define extra_steps
 #!/bin/bash
 
 # Install mysql-client to use drush and drupal-console inside the workspace.
+apt-get update
 apt-get install -y mysql-client
 endef
+
+export extra_steps
 
 UID := $(shell id -u)
 GID := $(shell id -g)
@@ -37,7 +40,7 @@ laradock/.env:
 	@#sed -i -e 's/WORKSPACE_PGID=1000/WORKSPACE_PGID=$(GID)/g' laradock/.env
 
 	@# Run the extra steps before the clean up.
-	@$(file >laradock/workspace/extra-steps.sh,$(extra_steps))
+	@echo "$$extra_steps" > laradock/workspace/extra-steps.sh
 	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN chmod u+x /tmp/extra-steps.sh && /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-71
 	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN chmod u+x /tmp/extra-steps.sh && /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-70
 	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN chmod u+x /tmp/extra-steps.sh && /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-56
