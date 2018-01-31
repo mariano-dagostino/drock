@@ -7,6 +7,13 @@
 
 laradock_version = 5.8.3
 
+# Add here all the commands you want to run in the
+# workspace container before complete the build.
+define extra_steps
+# Install mysql-client to use drush and drupal-console inside the workspace.
+apt-get install -y mysql-client
+endef
+
 UID := $(shell id -u)
 GID := $(shell id -g)
 
@@ -25,10 +32,11 @@ laradock/.env:
 	@sed -i -e 's/WORKSPACE_PUID=1000/WORKSPACE_PUID=$(UID)/g' laradock/.env
 	@sed -i -e 's/WORKSPACE_PGID=1000/WORKSPACE_PGID=$(GID)/g' laradock/.env
 
-	@# Workarround to install mysql-client to make drush & console work.
-	@sed -i -e 's/^RUN apt-get clean \&\&/RUN apt-get install mysql-client -y \&\& apt-get clean \&\&/g' laradock/workspace/Dockerfile-71
-	@sed -i -e 's/^RUN apt-get clean \&\&/RUN apt-get install mysql-client -y \&\& apt-get clean \&\&/g' laradock/workspace/Dockerfile-70
-	@sed -i -e 's/^RUN apt-get clean \&\&/RUN apt-get install mysql-client -y \&\& apt-get clean \&\&/g' laradock/workspace/Dockerfile-56
+	@# Run the extra steps before the clean up.
+	@echo $(extra_steps) > laradock/workspace/extra-steps.sh
+	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-71
+	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-70
+	@sed -i -e '/# Clean up/ iCOPY ./extra-steps.sh /tmp\nRUN /tmp/extra-steps.sh\n' laradock/workspace/Dockerfile-56
 
 	@# Make sure opcache.use_cwd is enabled. If not, is not possible to install multiple drupal sites in the same container.
 	@sed -i -e 's/opcache.use_cwd="0"/opcache.use_cwd="1"/g' laradock/php-fpm/opcache.ini
