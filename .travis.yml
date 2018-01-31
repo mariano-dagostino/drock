@@ -10,5 +10,5 @@ before_install:
   - docker version
 
 script:
-  - make setup
+  - sudo make setup
   - make start
