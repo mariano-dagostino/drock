@@ -5,7 +5,7 @@
 
 # Check the last version in: https://github.com/mariano-dagostino/drock
 
-laradock_version = 5.8.3
+laradock_version = 5.9.0
 
 # Add here all the commands you want to run in the
 # workspace container before complete the build.
@@ -27,9 +27,9 @@ all: help
 laradock/nginx/sites/drupal.conf:
 	@cp laradock/nginx/sites/laravel.conf.example laradock/nginx/sites/drupal.conf
 	@sed -i -e 's/root \/var\/www\/laravel\/public;/root \/var\/www\/drupal\/web;/g' laradock/nginx/sites/drupal.conf
-	@sed -i -e 's/server_name laravel.dev;/server_name drupal.dev;/g' laradock/nginx/sites/drupal.conf
+	@sed -i -e 's/server_name laravel.test;/server_name drupal.test;/g' laradock/nginx/sites/drupal.conf
 	@sed -i -e 's/laravel/drupal/g' laradock/nginx/sites/drupal.conf
-	@echo "Add 127.0.0.1 drupal.dev to your /etc/hosts file"
+	@echo "Add 127.0.0.1 drupal.test to your /etc/hosts file"
 
 laradock/.env:
 	@cp laradock/env-example laradock/.env
