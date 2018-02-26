@@ -11,4 +11,7 @@ before_install:
 
 script:
   - sudo make setup
+  - sudo make nginx-conf
+  - sudo make extra-steps
+  - sudo make cache-dirs
   - make start
