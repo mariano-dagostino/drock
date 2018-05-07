@@ -25,7 +25,7 @@ Then run:
 
 `make setup`
 
-This will download Laradock and configure drupal.dev as virtualhost.
+This will download Laradock and configure drupal.test as virtualhost.
 
 And finally just run:
 
@@ -41,19 +41,36 @@ The containers will be launched and your development environment will be ready.
 
 ## List of commmands:
 
-- `make setup` Installs laradock.
-- `make start` Starts the container.
-- `make bash`  Logs you into the workspace container using bash. [bash-php, bash-nginx, bash-mysql are also avaible.)
-- `make stop`  Stops the containers.
-- `make mysql` Logins you as root inside mysql console.
-- `make clean` Deletes laradock files.
+Run `make help` to see the list of commands.
+
+- `make setup`       Install Laradock.
+- `make start`       Starts the mariadb, nginx, php and workspace containers.
+- `make reload`      Stop and start again the containers.
+- `make stop`        Stops the containers.
+- `make clean`       Removes Laradock.
+- `make mysql`       Logins you as root inside mysql console.
+- `make destroy`     Destroys the workspace container. Required to apply changes defined in extra steps.
+- `make bash`        Starts a bash session inside the workspace container.
+- `make bash-root`   Starts a bash session as root inside the workspace container.
+- `make bash-php`    Starts a bash session inside the php-fpm container.
+- `make bash-nginx`  Starts a bash session inside the nginx-fpm container.
+- `make bash-mysql`  Starts a bash session inside the mariadb container.
+
 
 ## Requirements:
 
-- docker 17+ and docker-compose
+- `docker 17+` and `docker-compose`
 - make
-- linux (It should work on mac too, untested.)
+- linux
 - **Be able to run docker without sudo** [see how](https://docs.docker.com/engine/installation/linux/linux-postinstall/)
+
+**Note for Mac users**:
+
+Mac OSX has a different version of sed which requires file extensions when using the -i option.
+
+The easiest fix is to install the GNU version of sed using homebrew:
+
+`brew install gnu-sed --with-default-names`
 
 ## See it in action:
 
