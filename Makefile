@@ -5,7 +5,7 @@
 
 # Check the last version in: https://github.com/mariano-dagostino/drock
 
-laradock_version = 6.0.0
+laradock_version = 6.0.1
 
 # If you plan to build Laradock with diferent configurations you can
 # define the name of each setup by changing the following variable:
@@ -97,12 +97,8 @@ cache-dirs:
 
 
 
-
-
-
-
-
-
+# Section 4 --------------------------------------------------------------------
+# Define which modules should be enabled or disabled.
 
 env-settings:
 	@cp $(container_name)/env-example $(container_name)/.env
@@ -111,6 +107,12 @@ env-settings:
 	$(call env_enable,WORKSPACE_INSTALL_DRUSH)
 	$(call env_enable,INSTALL_WORKSPACE_SSH)
 	$(call env_disable,WORKSPACE_INSTALL_PYTHON)
+
+
+# ------------ You don't need to change anything else from here ----------------
+
+
+
 
 
 export extra_steps_as_root
