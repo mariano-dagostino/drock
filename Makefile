@@ -145,6 +145,7 @@ sed_extra_2 = RUN chmod u+x /tmp/extra-*-steps.sh && chown laradock /tmp/extra-u
 sed_extra_3 = USER root\nRUN /tmp/extra-root-steps.sh\nUSER laradock\nRUN /tmp/extra-user-steps.sh\nUSER root\n\n
 
 env-file: env-settings
+	@sed -i -e '/# Clean up/ i$(sed_extra_1)$(sed_extra_2)$(sed_extra_3)' $(container_name)/workspace/Dockerfile-72
 	@sed -i -e '/# Clean up/ i$(sed_extra_1)$(sed_extra_2)$(sed_extra_3)' $(container_name)/workspace/Dockerfile-71
 	@sed -i -e '/# Clean up/ i$(sed_extra_1)$(sed_extra_2)$(sed_extra_3)' $(container_name)/workspace/Dockerfile-70
 	@sed -i -e '/# Clean up/ i$(sed_extra_1)$(sed_extra_2)$(sed_extra_3)' $(container_name)/workspace/Dockerfile-56
