@@ -109,4 +109,4 @@ blt
 
 ## Author:
 
-Mariano D'Agostino [drupal.org/u/dagmar](https://www.drupal.org/user/154086)
+Mariano D'Agostino: [drupal.org/u/dagmar](https://www.drupal.org/user/154086)
