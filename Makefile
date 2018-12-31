@@ -5,7 +5,7 @@
 
 # Check the last version in: https://github.com/mariano-dagostino/drock
 
-laradock_version = 6.0.1
+laradock_version = 7.8.0
 
 # If you plan to build Laradock with diferent configurations you can
 # define the name of each setup by changing the following variable:
@@ -145,10 +145,8 @@ sed_extra_2 = RUN chmod u+x /tmp/extra-*-steps.sh && chown laradock /tmp/extra-u
 sed_extra_3 = USER root\nRUN /tmp/extra-root-steps.sh\nUSER laradock\nRUN /tmp/extra-user-steps.sh\nUSER root\n\n
 
 env-file: env-settings
-	@sed -i -e '/# Clean up/ i$(sed_extra_1)$(sed_extra_2)$(sed_extra_3)' $(container_name)/workspace/Dockerfile-72
-	@sed -i -e '/# Clean up/ i$(sed_extra_1)$(sed_extra_2)$(sed_extra_3)' $(container_name)/workspace/Dockerfile-71
-	@sed -i -e '/# Clean up/ i$(sed_extra_1)$(sed_extra_2)$(sed_extra_3)' $(container_name)/workspace/Dockerfile-70
-	@sed -i -e '/# Clean up/ i$(sed_extra_1)$(sed_extra_2)$(sed_extra_3)' $(container_name)/workspace/Dockerfile-56
+	cp $(container_name)/workspace/Dockerfile.backup $(container_name)/workspace/Dockerfile
+	@sed -i -e '/# Clean up/ i$(sed_extra_1)$(sed_extra_2)$(sed_extra_3)' $(container_name)/workspace/Dockerfile
 
 	@# Make sure opcache.use_cwd is enabled. If not, is not possible to install multiple drupal sites in the same container.
 	@sed -i -e 's/opcache.use_cwd="0"/opcache.use_cwd="1"/g' $(container_name)/php-fpm/opcache.ini
@@ -161,6 +159,7 @@ $(container_name)/docker-compose.yml:
 	@mv laradock-$(laradock_version) $(container_name)
 	@rm -f v$(laradock_version).zip
 	@echo "Laradock $(laradock_version) downloaded"
+	cp $(container_name)/workspace/Dockerfile $(container_name)/workspace/Dockerfile.backup
 
 setup: $(container_name)/docker-compose.yml
 	@echo "Laradock installed"
