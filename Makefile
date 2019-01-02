@@ -108,6 +108,7 @@ env-settings:
 	$(call env_enable,WORKSPACE_INSTALL_DRUSH)
 	$(call env_enable,INSTALL_WORKSPACE_SSH)
 	$(call env_disable,WORKSPACE_INSTALL_PYTHON)
+	$(call env_disable,PHP_FPM_INSTALL_IMAGEMAGICK)
 
 
 # ------------ You don't need to change anything else from here ----------------
