@@ -101,7 +101,8 @@ cache-dirs:
 # Define which modules should be enabled or disabled.
 
 env-settings:
-	@cp $(container_name)/env-example $(container_name)/.env
+	@cp laradock/env-example laradock/.env
+	sed -i -e 's/COMPOSE_PROJECT_NAME=laradock/COMPOSE_PROJECT_NAME=$(container_name)/g' laradock/.env
 	$(call env_enable,PHP_FPM_INSTALL_OPCACHE)
 	$(call env_enable,WORKSPACE_INSTALL_NODE)
 	$(call env_enable,WORKSPACE_INSTALL_DRUSH)
@@ -121,80 +122,80 @@ export extra_steps_as_laradock
 all: help
 
 define nginx_hosts
-	@cp $(container_name)/nginx/sites/laravel.conf.example       $(container_name)/nginx/sites/$(1).conf
-	@sed -i -e 's/root \/var\/www\/laravel\/public;/root $(2);/g' $(container_name)/nginx/sites/$(1).conf
-	@sed -i -e 's/server_name laravel.test;/server_name $(1);/g'  $(container_name)/nginx/sites/$(1).conf
-	@sed -i -e 's/laravel/$(1)/g' $(container_name)/nginx/sites/$(1).conf
+	@cp laradock/nginx/sites/laravel.conf.example                 laradock/nginx/sites/$(1).conf
+	@sed -i -e 's/root \/var\/www\/laravel\/public;/root $(2);/g' laradock/nginx/sites/$(1).conf
+	@sed -i -e 's/server_name laravel.test;/server_name $(1);/g'  laradock/nginx/sites/$(1).conf
+	@sed -i -e 's/laravel/$(1)/g' laradock/nginx/sites/$(1).conf
 endef
 
 define env_enable
-	@sed -i -e 's/$(1)=false/$(1)=true/g' $(container_name)/.env
+	@sed -i -e 's/$(1)=false/$(1)=true/g' laradock/.env
 endef
 
 define env_disable
-	@sed -i -e 's/$(1)=true/$(1)=false/g' $(container_name)/.env
+	@sed -i -e 's/$(1)=true/$(1)=false/g' laradock/.env
 endef
 
 extra-steps:
 	@# Run the extra steps before the clean up.
-	@echo "$$extra_steps_as_root"     > $(container_name)/workspace/extra-root-steps.sh
-	@echo "$$extra_steps_as_laradock" > $(container_name)/workspace/extra-user-steps.sh
+	@echo "$$extra_steps_as_root"     > laradock/workspace/extra-root-steps.sh
+	@echo "$$extra_steps_as_laradock" > laradock/workspace/extra-user-steps.sh
 
 sed_extra_1 = USER root\nCOPY ./extra-root-steps.sh /tmp\nCOPY ./extra-user-steps.sh /tmp\n
 sed_extra_2 = RUN chmod u+x /tmp/extra-*-steps.sh && chown laradock /tmp/extra-user-steps.sh\n
 sed_extra_3 = USER root\nRUN /tmp/extra-root-steps.sh\nUSER laradock\nRUN /tmp/extra-user-steps.sh\nUSER root\n\n
 
 env-file: env-settings
-	cp $(container_name)/workspace/Dockerfile.backup $(container_name)/workspace/Dockerfile
-	@sed -i -e '/# Clean up/ i$(sed_extra_1)$(sed_extra_2)$(sed_extra_3)' $(container_name)/workspace/Dockerfile
+	cp laradock/workspace/Dockerfile.backup laradock/workspace/Dockerfile
+	@sed -i -e '/# Clean up/ i$(sed_extra_1)$(sed_extra_2)$(sed_extra_3)' laradock/workspace/Dockerfile
 
 	@# Make sure opcache.use_cwd is enabled. If not, is not possible to install multiple drupal sites in the same container.
-	@sed -i -e 's/opcache.use_cwd="0"/opcache.use_cwd="1"/g' $(container_name)/php-fpm/opcache.ini
+	@sed -i -e 's/opcache.use_cwd="0"/opcache.use_cwd="1"/g' laradock/php-fpm/opcache.ini
 	@echo "Laradock .env file created."
 
-$(container_name)/docker-compose.yml:
+laradock/docker-compose.yml:
 	@echo "Downloading Laradock..."
 	@curl -sLO https://github.com/laradock/laradock/archive/v$(laradock_version).zip
 	@unzip -q v$(laradock_version).zip
-	@mv laradock-$(laradock_version) $(container_name)
+	@mv laradock-$(laradock_version) laradock
 	@rm -f v$(laradock_version).zip
 	@echo "Laradock $(laradock_version) downloaded"
-	cp $(container_name)/workspace/Dockerfile $(container_name)/workspace/Dockerfile.backup
+	cp laradock/workspace/Dockerfile laradock/workspace/Dockerfile.backup
 
-setup: $(container_name)/docker-compose.yml
+setup: laradock/docker-compose.yml
 	@echo "Laradock installed"
 
 start: env-file virtualhosts extra-steps cache-dirs
-	cd $(container_name) && docker-compose up -d $(containers)
+	cd laradock && docker-compose up -d $(containers)
 
 reload: stop start
 
 mysql:
-	cd $(container_name) && docker-compose exec mariadb bash -c "mysql -u root -proot"
+	cd laradock && docker-compose exec mariadb bash -c "mysql -u root -proot"
 
 stop:
-	cd $(container_name) && docker-compose down
+	cd laradock && docker-compose down
 
 clean:
-	rm -fR $(container_name) v$(laradock_version).zip
+	rm -fR laradock v$(laradock_version).zip
 
 destroy:
-	docker rmi $(container_name)_workspace
+	docker rmi laradock_workspace
 
 bash:
-	cd $(container_name) && docker-compose exec --user=laradock workspace bash
+	cd laradock && docker-compose exec --user=laradock workspace bash
 
 bash-root:
-	cd $(container_name) && docker-compose exec workspace bash
+	cd laradock && docker-compose exec workspace bash
 
 bash-nginx:
-	cd $(container_name) && docker-compose exec nginx bash
+	cd laradock && docker-compose exec nginx bash
 
 bash-php:
-	cd $(container_name) && docker-compose exec php-fpm bash
+	cd laradock && docker-compose exec php-fpm bash
 
 bash-mysql:
-	cd $(container_name) && docker-compose exec mariadb bash
+	cd laradock && docker-compose exec mariadb bash
 
 help:
 	@printf "\n\n\
@@ -222,5 +223,5 @@ help:
 UID := $(shell id -u)
 GID := $(shell id -g)
 fix-users:
-	sed -i -e 's/WORKSPACE_PUID=1000/WORKSPACE_PUID=$(UID)/g' $(container_name)/.env
-	sed -i -e 's/WORKSPACE_PGID=1000/WORKSPACE_PGID=$(GID)/g' $(container_name)/.env
+	sed -i -e 's/WORKSPACE_PUID=1000/WORKSPACE_PUID=$(UID)/g' laradock/.env
+	sed -i -e 's/WORKSPACE_PGID=1000/WORKSPACE_PGID=$(GID)/g' laradock/.env
